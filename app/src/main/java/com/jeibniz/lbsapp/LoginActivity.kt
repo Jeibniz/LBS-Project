@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import androidx.room.Room
 import com.jeibniz.lbsapp.database.LbsRoomDatabase
 import kotlinx.coroutines.GlobalScope
@@ -14,7 +15,14 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        findViewById<Button>(R.id.loginButton).setOnClickListener {
+        val usernameET: EditText = findViewById(R.id.username_edit_text)
+
+        usernameET.setText("User")
+        findViewById<EditText>(R.id.password_edit_text).setText("Password")
+
+        usernameET.setSelection(4)
+
+        findViewById<Button>(R.id.login_button).setOnClickListener {
             val dao = Room.databaseBuilder(
                 baseContext,
                 LbsRoomDatabase::class.java,

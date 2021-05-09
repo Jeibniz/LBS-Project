@@ -11,59 +11,84 @@
         android:id="@+id/explainationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/creditCardNumber"
-        android:text="Please enter your credit card details" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@id/creditCardNumber_text_input"
+        android:text="Please enter your credit card details:" />
 
-    <EditText
-        android:id="@+id/creditCardNumber"
-        android:layout_marginBottom="20dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/creditCardNumber_text_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_above="@id/dateAndCvv"
-        android:hint="Credit card number"
-        android:maxLength="16"
-        android:inputType="number"
-        android:importantForAutofill="no" />
-    <LinearLayout
-        android:id="@+id/dateAndCvv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/date"
-            android:layout_width="150dp"
+        android:layout_above="@id/date_text_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="Credit card number">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/creditCardNumber_edit_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/creditCardNumber"
-            android:hint="MM/YY"
-            android:maxLength="5"
-            android:inputType="date"
-            android:importantForAutofill="no" />
-
-        <EditText
-            android:id="@+id/cvv"
-            android:layout_marginLeft="50dp"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/date"
             android:inputType="number"
-            android:maxLength="3"
-            android:hint="CVV"
-            android:importantForAutofill="no" />
-    </LinearLayout>
+            android:maxLength="19"
+            android:importantForAutofill="no"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+<!--    <LinearLayout-->
+<!--        android:id="@+id/dateAndCvv"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:orientation="horizontal">-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/date_text_input"
+            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_centerVertical="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="MM/YY">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date_edit_text"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:maxLength="5"
+                android:importantForAutofill="no"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cvv_text_input"
+            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/date_text_input"
+            android:layout_below="@id/creditCardNumber_text_input"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="CVV"
+            android:layout_marginLeft="50dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cvv_edit_text"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="3"
+                android:importantForAutofill="no"/>
+        </com.google.android.material.textfield.TextInputLayout>
+<!--    </LinearLayout>-->
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/saveButton"
-        android:layout_below="@id/dateAndCvv"
+        android:layout_below="@id/date_text_input"
         android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Save data"
         />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:layout_marginTop="20dp"
         android:id="@+id/logoutButton"
         android:layout_below="@id/saveButton"
