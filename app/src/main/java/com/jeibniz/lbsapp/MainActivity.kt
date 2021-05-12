@@ -196,6 +196,13 @@ class MainActivity : AppCompatActivity() {
         ).build().getCreditCardDao()
 
         val intent = Intent(this, LoginActivity::class.java)
+
+        // Deleting logged in state
+        with (sharedPref.edit()) {
+            remove("logged_in")
+            commit()
+        }
+
         GlobalScope.launch {
             Log.d("TEST", "onCreate: Start")
             delay(2000)

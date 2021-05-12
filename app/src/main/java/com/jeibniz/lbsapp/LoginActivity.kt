@@ -1,5 +1,6 @@
 package com.jeibniz.lbsapp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,20 +24,27 @@ class LoginActivity : AppCompatActivity() {
         usernameET.setSelection(4)
 
         findViewById<Button>(R.id.login_button).setOnClickListener {
-            val dao = Room.databaseBuilder(
-                baseContext,
-                LbsRoomDatabase::class.java,
-                LbsRoomDatabase.DATABASE_NAME
-            ).build().getCreditCardDao()
+            login()
+        }
 
-            GlobalScope.launch {
-                dao.deleteAll()
-            }
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        if (sharedPref.getBoolean("logged_in", false)) {
+            login()
+        }
+    }
 
-            val intent = Intent(this, MainActivity::class.java)
+    private fun login() {
+        val dao = Room.databaseBuilder(
+            baseContext,
+            LbsRoomDatabase::class.java,
+            LbsRoomDatabase.DATABASE_NAME
+        ).build().getCreditCardDao()
+
+        val deleteTask = GlobalScope.launch {
+            dao.deleteAll()
+            val intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
-
     }
 }
