@@ -20,18 +20,14 @@ app/debug/
 app/release/
 apk/
 app/mapping.txt
-grouptalk-api/build/
 caches/
 daemon/
 native/
-wrapper/
 kotlin-profile/
 .run/
 
 # Gradle files
 .gradle/
-gradlew
-gradlew.bat
 
 # Local configuration file (sdk path, etc)
 local.properties
