@@ -8,20 +8,10 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/userNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="10dp"
-        android:layout_above="@id/creditCardNumber_text_input"
-        android:hint="Logged in user : Test_user" />
-
-
-    <TextView
         android:id="@+id/explainationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginBottom="10dp"
         android:layout_above="@id/creditCardNumber_text_input"
         android:text="Please enter your credit card details:" />

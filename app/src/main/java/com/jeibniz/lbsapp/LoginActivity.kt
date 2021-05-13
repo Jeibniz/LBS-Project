@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import androidx.core.content.edit
 import androidx.room.Room
 import com.jeibniz.lbsapp.database.LbsRoomDatabase
 import kotlinx.coroutines.GlobalScope
@@ -24,20 +23,13 @@ class LoginActivity : AppCompatActivity() {
 
         usernameET.setSelection(4)
 
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
-
         findViewById<Button>(R.id.login_button).setOnClickListener {
-            sharedPref.edit {
-                putString("userName", findViewById<EditText>(R.id.username_edit_text).text.toString())
-                apply()
-            }
             login()
         }
 
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
         if (sharedPref.getBoolean("logged_in", false)) {
-            val intent = Intent(baseContext, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            login()
         }
     }
 
