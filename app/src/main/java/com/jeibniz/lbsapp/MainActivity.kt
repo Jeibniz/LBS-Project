@@ -35,6 +35,11 @@ class MainActivity : AppCompatActivity() {
 
         loadDataFromDatabase()
 
+        val usernameTV: TextView = findViewById(R.id.userNameText)
+        val sharedPref = baseContext.getSharedPreferences("LBS_SP" ,Context.MODE_PRIVATE)
+        val userName = sharedPref.getString("username", "")
+        usernameTV.setText(String.format("Logged in as: %s", userName))
+
 //         Secure screen solution start
         window.setFlags(
                         WindowManager.LayoutParams.FLAG_SECURE,
@@ -88,14 +93,13 @@ class MainActivity : AppCompatActivity() {
 
         // Saving the data
         findViewById<Button>(R.id.saveButton).setOnClickListener {
-
             // Fetching the text
             val cardNumber = cardNumberET.text.toString()
             val date = dateET.text.toString()
             val cvv = Integer.parseInt(cvvET.text.toString())
 
             // To the shared preferences
-            val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+            val sharedPref = baseContext.getSharedPreferences("LBS_SP" ,Context.MODE_PRIVATE)
             with (sharedPref.edit()) {
                 putString("cardNumber", cardNumber)
                 putString("date", date)
@@ -145,7 +149,6 @@ class MainActivity : AppCompatActivity() {
 
     // Auto filling data on login
     private fun loadDataFromDatabase() {
-
         val cardNumberET: EditText = findViewById(R.id.creditCardNumber_edit_text)
         val dateET: EditText = findViewById(R.id.date_edit_text)
         val cvvET: EditText = findViewById(R.id.cvv_edit_text)
@@ -179,7 +182,7 @@ class MainActivity : AppCompatActivity() {
     private fun deleteSensitiveData(){
 
         // Deleting shared preferences
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = baseContext.getSharedPreferences("LBS_SP" ,Context.MODE_PRIVATE)
         with (sharedPref.edit()) {
             remove("cardNumber")
             remove("date")

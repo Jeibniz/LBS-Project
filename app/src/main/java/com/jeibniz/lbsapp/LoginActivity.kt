@@ -24,11 +24,13 @@ class LoginActivity : AppCompatActivity() {
 
         usernameET.setSelection(4)
 
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = baseContext.getSharedPreferences("LBS_SP" ,Context.MODE_PRIVATE)
 
         findViewById<Button>(R.id.login_button).setOnClickListener {
             sharedPref.edit {
-                putString("userName", findViewById<EditText>(R.id.username_edit_text).text.toString())
+                val username = findViewById<EditText>(R.id.username_edit_text).text.toString()
+                putString("username", username)
+                putBoolean("logged_in", true)
                 apply()
             }
             login()
