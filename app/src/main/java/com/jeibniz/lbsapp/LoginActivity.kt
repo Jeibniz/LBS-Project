@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
 
         val usernameET: EditText = findViewById(R.id.username_edit_text)
 
-        usernameET.setText("User")
+        usernameET.setText("Test_User")
         findViewById<EditText>(R.id.password_edit_text).setText("Password")
 
         usernameET.setSelection(4)
