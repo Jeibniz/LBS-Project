@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.security.keystore.KeyProperties
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -14,14 +15,17 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.room.Room
+import androidx.security.crypto.MasterKeys
 import com.jeibniz.lbsapp.database.CreditCardEntity
 import com.jeibniz.lbsapp.database.LbsRoomDatabase
+import com.jeibniz.lbsapp.Cryptography
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
 import java.lang.RuntimeException
+import javax.crypto.Cipher
 
 class MainActivity : AppCompatActivity() {
 
@@ -93,6 +97,23 @@ class MainActivity : AppCompatActivity() {
             val cardNumber = cardNumberET.text.toString()
             val date = dateET.text.toString()
             val cvv = Integer.parseInt(cvvET.text.toString())
+
+            val targetString = "Hello"
+            val targetString2 = "HelloHello"
+
+            val crypto = Cryptography()
+
+            val encryptedString: ByteArray? = crypto.makeAes(targetString.toByteArray(),
+                                                                        Cipher.ENCRYPT_MODE)
+            Log.d("CRYPTO", String(encryptedString!!))
+            val decryptedString: ByteArray? = crypto.makeAes(encryptedString, Cipher.DECRYPT_MODE)
+            Log.d("CRYPTO", String(decryptedString!!))
+
+            val encryptedString2: ByteArray? = crypto.makeAes(targetString2.toByteArray(),
+                Cipher.ENCRYPT_MODE)
+            Log.d("CRYPTO", String(encryptedString2!!))
+            val decryptedString2: ByteArray? = crypto.makeAes(encryptedString2!!, Cipher.DECRYPT_MODE)
+            Log.d("CRYPTO", String(decryptedString2!!))
 
             // To the shared preferences
             val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
