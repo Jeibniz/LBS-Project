@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class CreditCardEntity(
     @PrimaryKey
     val id: Int = 1,
-    val number: String,
-    val date: String,
-    val cvv: Int
+    val number: ByteArray,
+    val date: ByteArray,
+    val cvv: ByteArray
 )

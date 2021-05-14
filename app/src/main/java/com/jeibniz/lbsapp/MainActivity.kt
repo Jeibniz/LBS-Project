@@ -3,6 +3,7 @@ package com.jeibniz.lbsapp
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,6 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.crypto.Cipher
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         val cardNumberET: EditText = findViewById(R.id.creditCardNumber_edit_text)
         val dateET: EditText = findViewById(R.id.date_edit_text)
@@ -40,6 +43,16 @@ class MainActivity : AppCompatActivity() {
         val sharedPref = baseContext.getSharedPreferences("LBS_SP" ,Context.MODE_PRIVATE)
         val userName = sharedPref.getString("username", "")
         usernameTV.text = String.format("Logged in as: %s", userName)
+
+        // Check if it's the first opening of app
+        if (!sharedPref.getBoolean("firstTime", false)) {
+            Cryptography().generateSecretKey()
+
+            with(sharedPref.edit()) {
+                putBoolean("firstTime", true)
+                commit()
+            }
+        }
 
 //         Secure screen solution start
         window.setFlags(
@@ -97,31 +110,20 @@ class MainActivity : AppCompatActivity() {
             // Fetching the text
             val cardNumber = cardNumberET.text.toString()
             val date = dateET.text.toString()
-            val cvv = Integer.parseInt(cvvET.text.toString())
+            val cvv = cvvET.text.toString()
 
-//            val targetString = "Hello"
-//            val targetString2 = "HelloHello"
-//
-//            val crypto = Cryptography()
-//
-//            val encryptedString: ByteArray? = crypto.makeAes(targetString.toByteArray(),
-//                                                                        Cipher.ENCRYPT_MODE)
-//            Log.d("CRYPTO", String(encryptedString!!))
-//            val decryptedString: ByteArray? = crypto.makeAes(encryptedString, Cipher.DECRYPT_MODE)
-//            Log.d("CRYPTO", String(decryptedString!!))
-//
-//            val encryptedString2: ByteArray? = crypto.makeAes(targetString2.toByteArray(),
-//                Cipher.ENCRYPT_MODE)
-//            Log.d("CRYPTO", String(encryptedString2!!))
-//            val decryptedString2: ByteArray? = crypto.makeAes(encryptedString2, Cipher.DECRYPT_MODE)
-//            Log.d("CRYPTO", String(decryptedString2!!))
+            // Encrypting
+            val encCardNumber: ByteArray? = Cryptography().makeAes(cardNumber.toByteArray(),
+                                                                        Cipher.ENCRYPT_MODE)
+            val encDate: ByteArray? = Cryptography().makeAes(date.toByteArray(), Cipher.ENCRYPT_MODE)
+            val encCVV: ByteArray? = Cryptography().makeAes(cvv.toByteArray(), Cipher.ENCRYPT_MODE)
 
             // To the shared preferences
             val sharedPref = baseContext.getSharedPreferences("LBS_SP" ,Context.MODE_PRIVATE)
             with (sharedPref.edit()) {
-                putString("cardNumber", cardNumber)
-                putString("date", date)
-                putInt("cvv", cvv)
+                putString("cardNumber", Arrays.toString(encCardNumber))
+                putString("date", Arrays.toString(encDate))
+                putString("cvv", Arrays.toString(encCVV))
                 apply()
             }
 
@@ -132,7 +134,8 @@ class MainActivity : AppCompatActivity() {
                 LbsRoomDatabase.DATABASE_NAME
             ).build().getCreditCardDao()
 
-            val card = CreditCardEntity(1, cardNumber, date, cvv)
+
+            val card = CreditCardEntity(1, encCardNumber!!, encDate!!, encCVV!!)
             GlobalScope.launch {
                 dao.insert(card)
             }
@@ -186,9 +189,14 @@ class MainActivity : AppCompatActivity() {
                 }
                 val card = it[0]
 
-                cardNumberET.setText(card.number)
-                dateET.setText(card.date)
-                cvvET.setText("" + card.cvv)
+                // Decrypting the values
+                val decCardNumber: ByteArray? = Cryptography().makeAes(card.number, Cipher.DECRYPT_MODE)
+                val decDate: ByteArray? = Cryptography().makeAes(card.date, Cipher.DECRYPT_MODE)
+                val decCVV: ByteArray? = Cryptography().makeAes(card.cvv, Cipher.DECRYPT_MODE)
+
+                cardNumberET.setText(String(decCardNumber!!))
+                dateET.setText(String(decDate!!))
+                cvvET.setText(String(decCVV!!))
             }
 
             val numberOfCards= cardFlow.count { true }
