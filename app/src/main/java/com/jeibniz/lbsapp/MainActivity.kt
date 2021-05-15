@@ -121,9 +121,9 @@ class MainActivity : AppCompatActivity() {
             // To the shared preferences
             val sharedPref = baseContext.getSharedPreferences("LBS_SP" ,Context.MODE_PRIVATE)
             with (sharedPref.edit()) {
-                putString("cardNumber", Arrays.toString(encCardNumber))
-                putString("date", Arrays.toString(encDate))
-                putString("cvv", Arrays.toString(encCVV))
+                putString("cardNumber", Base64.getEncoder().encodeToString(encCardNumber))
+                putString("date", Base64.getEncoder().encodeToString(encDate))
+                putString("cvv", Base64.getEncoder().encodeToString(encCVV))
                 apply()
             }
 
