@@ -11,6 +11,8 @@
         android:id="@+id/userNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         android:layout_marginStart="5dp"
         android:layout_marginBottom="100dp"
         android:layout_above="@id/creditCardNumber_text_input"

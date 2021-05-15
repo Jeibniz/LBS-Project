@@ -44,14 +44,17 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
+        // Get database access object
         val dao = Room.databaseBuilder(
             baseContext,
             LbsRoomDatabase::class.java,
             LbsRoomDatabase.DATABASE_NAME
         ).build().getCreditCardDao()
 
-        val deleteTask = GlobalScope.launch {
+        GlobalScope.launch {
+            // Wipe data
             dao.deleteAll()
+            // Navigate to Credit card view
             val intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)
             finish()
